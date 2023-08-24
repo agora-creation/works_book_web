@@ -19,7 +19,7 @@ FluentThemeData customTheme() {
     scaffoldBackgroundColor: kBackColor,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     navigationPaneTheme: const NavigationPaneThemeData(
-      backgroundColor: kBackColor,
+      backgroundColor: kWhiteColor,
       highlightColor: kBaseColor,
     ),
     checkboxTheme: CheckboxThemeData(
