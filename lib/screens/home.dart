@@ -1,6 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:provider/provider.dart';
+import 'package:works_book_web/common/style.dart';
+import 'package:works_book_web/providers/auth.dart';
 import 'package:works_book_web/screens/group.dart';
+import 'package:works_book_web/screens/login.dart';
 import 'package:works_book_web/widgets/app_bar_title.dart';
+import 'package:works_book_web/widgets/custom_button.dart';
 import 'package:works_book_web/widgets/custom_icon_button.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,6 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return NavigationView(
       appBar: NavigationAppBar(
         automaticallyImplyLeading: false,
@@ -25,7 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
             alignment: Alignment.centerRight,
             child: CustomIconButton(
               iconData: FluentIcons.settings,
-              onPressed: () {},
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => SignOutDialog(
+                  authProvider: authProvider,
+                ),
+              ),
             ),
           ),
         ),
@@ -46,6 +58,61 @@ class _HomeScreenState extends State<HomeScreen> {
           PaneItemSeparator(),
         ],
       ),
+    );
+  }
+}
+
+class SignOutDialog extends StatefulWidget {
+  final AuthProvider authProvider;
+
+  const SignOutDialog({
+    required this.authProvider,
+    super.key,
+  });
+
+  @override
+  State<SignOutDialog> createState() => _SignOutDialogState();
+}
+
+class _SignOutDialogState extends State<SignOutDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return ContentDialog(
+      title: const Text(
+        'システム情報',
+        style: TextStyle(fontSize: 18),
+      ),
+      content: const Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('最終更新日: 2023/07/04 15:49'),
+          Text('ログインID: owner'),
+        ],
+      ),
+      actions: [
+        CustomButton(
+          labelText: '閉じる',
+          labelColor: kWhiteColor,
+          backgroundColor: kGreyColor,
+          onPressed: () => Navigator.pop(context),
+        ),
+        CustomButton(
+          labelText: 'ログアウト',
+          labelColor: kWhiteColor,
+          backgroundColor: kRedColor,
+          onPressed: () async {
+            await widget.authProvider.signOut();
+            if (!mounted) return;
+            Navigator.pushReplacement(
+              context,
+              FluentPageRoute(
+                builder: (context) => const LoginScreen(),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
