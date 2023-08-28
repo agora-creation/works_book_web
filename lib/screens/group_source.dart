@@ -49,10 +49,6 @@ class GroupSource extends DataGridSource {
           columnName: 'email',
           value: group.email,
         ),
-        DataGridCell(
-          columnName: 'password',
-          value: group.password,
-        ),
       ]);
     }).toList();
   }
@@ -77,7 +73,6 @@ class GroupSource extends DataGridSource {
     cells.add(CustomCell(label: '${row.getCells()[3].value}'));
     cells.add(CustomCell(label: '${row.getCells()[4].value}'));
     cells.add(CustomCell(label: '${row.getCells()[5].value}'));
-    cells.add(CustomCell(label: '${row.getCells()[6].value}'));
     cells.add(Row(
       children: [
         CustomButton(
@@ -212,7 +207,7 @@ class _ModGroupDialogState extends State<ModGroupDialog> {
           InfoLabel(
             label: '郵便番号',
             child: CustomTextBox(
-              controller: nameController,
+              controller: zipCodeController,
               keyboardType: TextInputType.text,
               maxLines: 1,
             ),
@@ -221,7 +216,7 @@ class _ModGroupDialogState extends State<ModGroupDialog> {
           InfoLabel(
             label: '住所',
             child: CustomTextBox(
-              controller: nameController,
+              controller: addressController,
               keyboardType: TextInputType.streetAddress,
               maxLines: 1,
             ),
@@ -230,7 +225,7 @@ class _ModGroupDialogState extends State<ModGroupDialog> {
           InfoLabel(
             label: '電話番号',
             child: CustomTextBox(
-              controller: nameController,
+              controller: telController,
               keyboardType: TextInputType.phone,
               maxLines: 1,
             ),
@@ -239,7 +234,7 @@ class _ModGroupDialogState extends State<ModGroupDialog> {
           InfoLabel(
             label: 'メールアドレス',
             child: CustomTextBox(
-              controller: nameController,
+              controller: emailController,
               keyboardType: TextInputType.emailAddress,
               maxLines: 1,
             ),
