@@ -59,7 +59,12 @@ class _GroupScreenState extends State<GroupScreen> {
                       labelText: '新規登録',
                       labelColor: kWhiteColor,
                       backgroundColor: kBlueColor,
-                      onPressed: () {},
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => AddGroupDialog(
+                          getGroups: _getGroups,
+                        ),
+                      ),
                     ),
                   ],
                 ),
