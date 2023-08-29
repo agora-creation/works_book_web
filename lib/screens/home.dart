@@ -25,9 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return NavigationView(
       appBar: NavigationAppBar(
         automaticallyImplyLeading: false,
-        title: const AppBarTitle('お仕事手帳 - 管理画面'),
+        title: const Padding(
+          padding: EdgeInsets.all(8),
+          child: AppBarTitle('お仕事手帳 - 管理画面'),
+        ),
         actions: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.all(8),
           child: Align(
             alignment: Alignment.centerRight,
             child: CustomIconButton(
