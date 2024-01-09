@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         title: const Padding(
           padding: EdgeInsets.all(8),
-          child: AppBarTitle('お仕事手帳 - 管理画面'),
+          child: AppBarTitle('お仕事手帳 - 契約管理画面'),
         ),
         actions: Padding(
           padding: const EdgeInsets.all(8),
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
           PaneItemSeparator(),
           PaneItem(
             icon: const Icon(FluentIcons.calendar),
-            title: const Text('会社・組織管理'),
+            title: const Text('契約管理'),
             body: const GroupScreen(),
           ),
           PaneItemSeparator(),

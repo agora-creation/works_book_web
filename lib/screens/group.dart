@@ -46,7 +46,7 @@ class _GroupScreenState extends State<GroupScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  '会社・組織データを一覧で表示します。契約があった場合は、ここで新規登録してください。',
+                  '契約された会社・組織データを一覧で表示します。契約があった場合は、ここで新規登録してください。',
                   style: TextStyle(fontSize: 14),
                 ),
                 const SizedBox(height: 8),
@@ -101,6 +101,10 @@ class _GroupScreenState extends State<GroupScreen> {
                       GridColumn(
                         columnName: 'email',
                         label: const CustomCell(label: 'メールアドレス'),
+                      ),
+                      GridColumn(
+                        columnName: 'image',
+                        label: const CustomCell(label: '画像'),
                       ),
                       GridColumn(
                         columnName: 'edit_favorites',

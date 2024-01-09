@@ -49,6 +49,10 @@ class GroupSource extends DataGridSource {
           columnName: 'email',
           value: group.email,
         ),
+        const DataGridCell(
+          columnName: 'image',
+          value: '',
+        ),
       ]);
     }).toList();
   }
@@ -73,6 +77,7 @@ class GroupSource extends DataGridSource {
     cells.add(CustomCell(label: '${row.getCells()[3].value}'));
     cells.add(CustomCell(label: '${row.getCells()[4].value}'));
     cells.add(CustomCell(label: '${row.getCells()[5].value}'));
+    cells.add(CustomCell(label: '${row.getCells()[6].value}'));
     cells.add(Row(
       children: [
         CustomButton(
