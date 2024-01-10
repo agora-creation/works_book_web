@@ -158,91 +158,93 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
         '会社・組織 - 新規登録',
         style: TextStyle(fontSize: 18),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InfoLabel(
-            label: '会社・組織番号',
-            child: CustomTextBox(
-              controller: numberController,
-              keyboardType: TextInputType.number,
-              maxLines: 1,
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InfoLabel(
+              label: '会社・組織番号',
+              child: CustomTextBox(
+                controller: numberController,
+                keyboardType: TextInputType.number,
+                maxLines: 1,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          InfoLabel(
-            label: '会社・組織名',
-            child: CustomTextBox(
-              controller: nameController,
-              keyboardType: TextInputType.text,
-              maxLines: 1,
+            const SizedBox(height: 8),
+            InfoLabel(
+              label: '会社・組織名',
+              child: CustomTextBox(
+                controller: nameController,
+                keyboardType: TextInputType.text,
+                maxLines: 1,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          InfoLabel(
-            label: '郵便番号',
-            child: CustomTextBox(
-              controller: zipCodeController,
-              keyboardType: TextInputType.text,
-              maxLines: 1,
+            const SizedBox(height: 8),
+            InfoLabel(
+              label: '郵便番号',
+              child: CustomTextBox(
+                controller: zipCodeController,
+                keyboardType: TextInputType.text,
+                maxLines: 1,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          InfoLabel(
-            label: '住所',
-            child: CustomTextBox(
-              controller: addressController,
-              keyboardType: TextInputType.streetAddress,
-              maxLines: 1,
+            const SizedBox(height: 8),
+            InfoLabel(
+              label: '住所',
+              child: CustomTextBox(
+                controller: addressController,
+                keyboardType: TextInputType.streetAddress,
+                maxLines: 1,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          InfoLabel(
-            label: '電話番号',
-            child: CustomTextBox(
-              controller: telController,
-              keyboardType: TextInputType.phone,
-              maxLines: 1,
+            const SizedBox(height: 8),
+            InfoLabel(
+              label: '電話番号',
+              child: CustomTextBox(
+                controller: telController,
+                keyboardType: TextInputType.phone,
+                maxLines: 1,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          InfoLabel(
-            label: 'メールアドレス',
-            child: CustomTextBox(
-              controller: emailController,
-              keyboardType: TextInputType.emailAddress,
-              maxLines: 1,
+            const SizedBox(height: 8),
+            InfoLabel(
+              label: 'メールアドレス',
+              child: CustomTextBox(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                maxLines: 1,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          InfoLabel(
-            label: 'パスワード',
-            child: CustomTextBox(
-              controller: passwordController,
-              keyboardType: TextInputType.visiblePassword,
-              maxLines: 1,
-              obscureText: true,
+            const SizedBox(height: 8),
+            InfoLabel(
+              label: 'パスワード',
+              child: CustomTextBox(
+                controller: passwordController,
+                keyboardType: TextInputType.visiblePassword,
+                maxLines: 1,
+                obscureText: true,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          InfoLabel(
-            label: '画像',
-            child: CustomInputImage(
-              picked: pickedImage,
-              onTap: () async {
-                final result = await FilePicker.platform.pickFiles(
-                  type: FileType.image,
-                );
-                if (result != null) {
-                  setState(() {
-                    pickedImage = result.files.first.bytes;
-                  });
-                }
-              },
+            const SizedBox(height: 8),
+            InfoLabel(
+              label: '画像',
+              child: CustomInputImage(
+                picked: pickedImage,
+                onTap: () async {
+                  final result = await FilePicker.platform.pickFiles(
+                    type: FileType.image,
+                  );
+                  if (result != null) {
+                    setState(() {
+                      pickedImage = result.files.first.bytes;
+                    });
+                  }
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       actions: [
         CustomButton(
