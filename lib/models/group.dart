@@ -9,6 +9,7 @@ class GroupModel {
   String _tel = '';
   String _email = '';
   String _password = '';
+  String _image = '';
   DateTime _createdAt = DateTime.now();
 
   String get id => _id;
@@ -19,6 +20,7 @@ class GroupModel {
   String get tel => _tel;
   String get email => _email;
   String get password => _password;
+  String get image => _image;
   DateTime get createdAt => _createdAt;
 
   GroupModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
@@ -31,6 +33,7 @@ class GroupModel {
     _tel = map['tel'] ?? '';
     _email = map['email'] ?? '';
     _password = map['password'] ?? '';
+    _image = map['image'] ?? '';
     if (map['createdAt'] != null) {
       _createdAt = map['createdAt'].toDate() ?? DateTime.now();
     }

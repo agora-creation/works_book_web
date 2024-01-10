@@ -1,3 +1,7 @@
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as storage;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:works_book_web/common/style.dart';
@@ -8,6 +12,7 @@ import 'package:works_book_web/widgets/custom_button.dart';
 import 'package:works_book_web/widgets/custom_cell.dart';
 import 'package:works_book_web/widgets/custom_data_grid.dart';
 import 'package:works_book_web/widgets/custom_icon_text_button.dart';
+import 'package:works_book_web/widgets/custom_input_image.dart';
 import 'package:works_book_web/widgets/custom_text_box.dart';
 
 class GroupScreen extends StatefulWidget {
@@ -144,6 +149,7 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
   TextEditingController telController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  Uint8List? pickedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -219,6 +225,23 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
               obscureText: true,
             ),
           ),
+          const SizedBox(height: 8),
+          InfoLabel(
+            label: '画像',
+            child: CustomInputImage(
+              picked: pickedImage,
+              onTap: () async {
+                final result = await FilePicker.platform.pickFiles(
+                  type: FileType.image,
+                );
+                if (result != null) {
+                  setState(() {
+                    pickedImage = result.files.first.bytes;
+                  });
+                }
+              },
+            ),
+          ),
         ],
       ),
       actions: [
@@ -237,6 +260,19 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
               numberController.text,
             );
             if (group != null) return;
+            String image = '';
+            if (pickedImage != null) {
+              storage.UploadTask uploadTask;
+              storage.Reference ref = storage.FirebaseStorage.instance
+                  .ref()
+                  .child('group')
+                  .child('/${numberController.text}.jpeg');
+              final metadata =
+                  storage.SettableMetadata(contentType: 'image/jpeg');
+              uploadTask = ref.putData(pickedImage!, metadata);
+              await uploadTask.whenComplete(() => null);
+              image = await ref.getDownloadURL();
+            }
             String id = groupService.id();
             groupService.create({
               'id': id,
@@ -247,6 +283,7 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
               'tel': telController.text,
               'email': emailController.text,
               'password': passwordController.text,
+              'image': image,
               'createdAt': DateTime.now(),
             });
             widget.getGroups();

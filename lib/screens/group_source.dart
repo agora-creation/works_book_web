@@ -1,3 +1,7 @@
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as storage;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:works_book_web/common/style.dart';
@@ -5,6 +9,8 @@ import 'package:works_book_web/models/group.dart';
 import 'package:works_book_web/services/group.dart';
 import 'package:works_book_web/widgets/custom_button.dart';
 import 'package:works_book_web/widgets/custom_cell.dart';
+import 'package:works_book_web/widgets/custom_image_cell.dart';
+import 'package:works_book_web/widgets/custom_input_image.dart';
 import 'package:works_book_web/widgets/custom_text_box.dart';
 
 class GroupSource extends DataGridSource {
@@ -49,9 +55,9 @@ class GroupSource extends DataGridSource {
           columnName: 'email',
           value: group.email,
         ),
-        const DataGridCell(
+        DataGridCell(
           columnName: 'image',
-          value: '',
+          value: group.image,
         ),
       ]);
     }).toList();
@@ -77,7 +83,7 @@ class GroupSource extends DataGridSource {
     cells.add(CustomCell(label: '${row.getCells()[3].value}'));
     cells.add(CustomCell(label: '${row.getCells()[4].value}'));
     cells.add(CustomCell(label: '${row.getCells()[5].value}'));
-    cells.add(CustomCell(label: '${row.getCells()[6].value}'));
+    cells.add(CustomImageCell(image: '${row.getCells()[6].value}'));
     cells.add(Row(
       children: [
         CustomButton(
@@ -166,6 +172,7 @@ class _ModGroupDialogState extends State<ModGroupDialog> {
   TextEditingController telController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  Uint8List? pickedImage;
 
   void _init() {
     setState(() {
@@ -254,6 +261,24 @@ class _ModGroupDialogState extends State<ModGroupDialog> {
               obscureText: true,
             ),
           ),
+          const SizedBox(height: 8),
+          InfoLabel(
+            label: '画像',
+            child: CustomInputImage(
+              url: widget.group.image,
+              picked: pickedImage,
+              onTap: () async {
+                final result = await FilePicker.platform.pickFiles(
+                  type: FileType.image,
+                );
+                if (result != null) {
+                  setState(() {
+                    pickedImage = result.files.first.bytes;
+                  });
+                }
+              },
+            ),
+          ),
         ],
       ),
       actions: [
@@ -268,6 +293,19 @@ class _ModGroupDialogState extends State<ModGroupDialog> {
           labelColor: kWhiteColor,
           backgroundColor: kBlueColor,
           onPressed: () async {
+            String image = widget.group.image;
+            if (pickedImage != null) {
+              storage.UploadTask uploadTask;
+              storage.Reference ref = storage.FirebaseStorage.instance
+                  .ref()
+                  .child('group')
+                  .child('/${widget.group.number}.jpeg');
+              final metadata =
+                  storage.SettableMetadata(contentType: 'image/jpeg');
+              uploadTask = ref.putData(pickedImage!, metadata);
+              await uploadTask.whenComplete(() => null);
+              image = await ref.getDownloadURL();
+            }
             groupService.update({
               'id': widget.group.id,
               'name': nameController.text,
@@ -276,6 +314,7 @@ class _ModGroupDialogState extends State<ModGroupDialog> {
               'tel': telController.text,
               'email': emailController.text,
               'password': passwordController.text,
+              'image': image,
             });
             widget.getGroups();
             if (!mounted) return;

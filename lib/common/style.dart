@@ -1,5 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
+const kDefaultImageUrl = 'assets/images/default.png';
+
 const kBackColor = Color(0xFFF4F5F7);
 const kBaseColor = Color(0xFF3F51B5);
 const kWhiteColor = Color(0xFFFFFFFF);
